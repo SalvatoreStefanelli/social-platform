@@ -1,0 +1,41 @@
+### QUERY SQL
+
+- Seleziona gli utenti che hanno postato almeno un video
+
+SELECT `users`.`id`, `medias`.`type`
+FROM `users`
+JOIN `medias` ON `users`.`id` = `medias`.`user_id`
+WHERE `medias`.`type` = 'video'
+GROUP BY `users`.`id`;
+
+- Seleziona tutti i post senza Like (13)
+
+SELECT `posts`.`id` AS `posts_without_like`
+FROM `users` 
+JOIN `posts` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `likes` ON `posts`.`id` = `likes`.`post_id` 
+WHERE `likes` . `user_id` IS NULL;
+
+- Conta il numero di like per ogni post (165)
+
+SELECT `posts`.`id`, COUNT(`likes`.`user_id`) AS `numb_likes`
+FROM `users`
+JOIN `posts` ON `users`.`id` = `posts`.`user_id`
+LEFT JOIN `likes` ON `posts`.`id` = `likes`.`post_id`
+GROUP BY `posts`.`id`;
+
+- Ordina gli utenti per il numero di media caricati (25) 
+
+SELECT `users`.`id`, COUNT(`medias`.`id`) AS `numb_medias`
+FROM `users` 
+JOIN `medias` ON `users`.`id` = `medias`.`user_id` 
+GROUP BY `users`.`id`
+ORDER BY `numb_medias` DESC;
+
+- Ordina gli utenti per totale di likes ricevuti nei loro posts (25) 
+
+SELECT `users`.`id`, COUNT(`likes`.`user_id`) AS `numb_likes_received`
+FROM `users` 
+JOIN `likes` ON `users`.`id` = `likes`.`user_id` 
+GROUP BY `users`.`id`
+ORDER BY `numb_likes` DESC;
